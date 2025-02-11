@@ -1,5 +1,5 @@
 import express from 'express';
-import user from "./user.model.js";
+import User from "./user.model.js";
 import bcrypt from 'bcrypt';
 import mongoose from 'mongoose';
 import jwt from 'jsonwebtoken';
@@ -18,10 +18,10 @@ router.post("/user/register", async (req, res, next) => {
         return res.status(400).send({message: error.message});
     }  
 }, async (req, res) => {
-    const newuser = req.body;
+    const newUser = req.body;
 
     //find user with provided email
-    const user = await user.findOne({ email: newuser.email });
+    const user = await User.findOne({ email: newUser.email });
 
     //if user throws error
     if(user) {
@@ -30,13 +30,13 @@ router.post("/user/register", async (req, res, next) => {
 
     //hash password =? requirement is plain password and salt rounds
 
-    const plainPassword = newuser.password;
+    const plainPassword = newUser.password;
     const saltRounds = 10;
     const hashedPassword = await bcrypt.hash(plainPassword, saltRounds);
 
-    newuser.password = hashedPassword;
+    newUser.password = hashedPassword;
 
-    await user.create(newuser);
+    await User.create(newUser);
     return res.status(201).send("Registered user...")
 })
 
@@ -58,7 +58,7 @@ router.post("/user/login", async(req, res, next) => {
 
 
     //find user with provided email
-    const user = await user.findOne({ email : loginCredentials.email });
+    const user = await User.findOne({ email : loginCredentials.email });
 
     //if not user throw error
     if(!user) {
@@ -89,12 +89,12 @@ router.post("/user/login", async(req, res, next) => {
         expiresIn: '8d',
     });
 
-    return res.status(200).send({message: 'Login successfull...', userDetails: user, accessToken: token});
+    return res.status(200).send({message: 'Login successful...', userDetails: user, accessToken: token});
 });
 
 // list request
 router.get('/user/list', async (req, res) => {
-    const users = await user.find();
+    const users = await User.find();
     return res.status(200).send({message: 'success', user_List: users});
 });
 
@@ -143,7 +143,7 @@ router.delete('/user/delete/:id', async (req, res) => {
     }
     
     // find user
-    const user = await user.findOne({_id : userId});
+    const user = await User.findOne({_id : userId});
 
     // if not user throw error
     if(!user) {
@@ -151,7 +151,7 @@ router.delete('/user/delete/:id', async (req, res) => {
     }
 
     //delete user
-    await user.deleteOne({_id : userId
+    await User.deleteOne({_id : userId
     });
 
     // send res

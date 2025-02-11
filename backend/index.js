@@ -1,6 +1,6 @@
 import express from 'express';
 import mongoose from 'mongoose';
-import user from "./Controllers/user.model.js";
+import User from "./Controllers/user.model.js";
 import { userController } from './Controllers/user.controller.js';
 // import jwt from 'jsonwebtoken';
 import { productController } from './product/product.controller.js';

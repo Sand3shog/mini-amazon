@@ -1,4 +1,5 @@
 import React from 'react'
+import axios from 'axios'
 
 import {
   Box,
@@ -14,9 +15,23 @@ import {
 import { Formik } from "formik";
 
 import * as yup from "yup";
-import { Link } from 'react-router';
+import { Link, useNavigate } from 'react-router';
+import axiosInstance from '../../lib/axios_instance';
 
 const Register = () => {
+  const navigate = useNavigate();
+  
+  //register user
+  const registerUser = async (values) => {
+    try {
+      const res = await axiosInstance.post("user/register", values);
+      navigate("/login");
+    } catch (error) {
+      console.log("Registration of user denied");
+      console.log(error);
+    }
+  };
+
   return (
     <Formik
       initialValues={{
@@ -39,9 +54,10 @@ const Register = () => {
           dateOfBirth: yup.date().required(),
           gender: yup.string().required().oneOf(["Male", "Female", "Other"]),
       })}
-      onSubmit={(values) => {
-        console.log(values);
-      }}
+      onSubmit={ async (values) => {
+        registerUser(values);
+      }
+    }
     >
       {(formik) => {
         return (

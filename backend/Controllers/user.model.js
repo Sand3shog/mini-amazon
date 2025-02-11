@@ -1,4 +1,3 @@
-
 import mongoose from 'mongoose';
 
 const userSchema = new mongoose.Schema({
@@ -28,10 +27,10 @@ const userSchema = new mongoose.Schema({
         unique: true,
     },
     phoneNumber: {
-        type: String,
-        required: false,
+        type: Number,
+        required: true,
         trim: true,
-        maxlength: 20,
+        maxlength: 10,
     },
     address: {
         type: String,
@@ -55,5 +54,5 @@ const userSchema = new mongoose.Schema({
 });
 
 // create table/ model/ collection
-const user = mongoose.model('user', userSchema);
-export default user;
+const User = mongoose.model('User', userSchema);
+export default User;
