@@ -1,5 +1,5 @@
 import jwt from 'jsonwebtoken';
-import user from '../Controllers/user.model.js';
+import User from '../Controllers/user.model.js';
 
 const isUser = async (req, res, next) => {
   // extract token from req.headers.authorization
@@ -27,7 +27,7 @@ const isUser = async (req, res, next) => {
   }
 
   //  find user using email from payload
-    const user = await user.findOne({ email: payload.email });
+    const user = await User.findOne({ email: payload.email });
 
   if (!user) {
     return res.status(401).send({ message: 'Unauthorized.' });

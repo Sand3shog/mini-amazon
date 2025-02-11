@@ -1,5 +1,4 @@
-import React from 'react'
-import axios from 'axios'
+import React from 'react';
 
 import {
   Box,
@@ -14,8 +13,8 @@ import {
 } from "@mui/material";
 import { Formik } from "formik";
 
-import * as yup from "yup";
 import { Link, useNavigate } from 'react-router';
+import * as yup from "yup";
 import axiosInstance from '../../lib/axios_instance';
 
 const Register = () => {

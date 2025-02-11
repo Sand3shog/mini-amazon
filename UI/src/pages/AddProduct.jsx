@@ -12,6 +12,9 @@ import { Formik } from "formik";
 import React from "react";
 import * as yup from "yup";
 
+import { useNavigate } from "react-router";
+import axiosInstance from "../../lib/axios_instance";
+
 const categoryList = [
   "grocery",
   "electronics",
@@ -22,6 +25,21 @@ const categoryList = [
   "laundry",
 ];
 const AddProduct = () => {
+  const navigate = useNavigate();
+  const addProduct = async (values) => {
+    try {
+      await axiosInstance.post("/product/add", values, {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+        },
+      });
+
+      navigate("/");
+    } catch (error) {
+      console.log("Add product api hit failed...");
+      console.log(error);
+    }
+  };
   return (
     <Formik
       initialValues={{
@@ -43,7 +61,7 @@ const AddProduct = () => {
         image: yup.string().notRequired().trim(),
       })}
       onSubmit={(values) => {
-        console.log(values);
+        addProduct(values);
       }}
     >
       {(formik) => {
@@ -147,7 +165,7 @@ const AddProduct = () => {
               ) : null}
             </FormControl>
 
-            <Button fullWidth variant="contained" color="warning" type="submit">
+            <Button fullWidth variant="contained" color="success" type="submit">
               submit
             </Button>
           </form>

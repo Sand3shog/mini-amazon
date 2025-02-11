@@ -4,6 +4,7 @@ import productValidationSchema from './product.validation.js';
 import mongoose from 'mongoose';
 import isUser from '../middleware/authentication.middleware.js';
 import validateMongoIdFromReqParams from '../middleware/mongo.validate.js';
+import yup from 'yup';
 
 const router = express.Router();
 
@@ -69,9 +70,9 @@ router.post(
     '/product/list',
     isUser,
     async (req, res, next) => {
-      const paginationSchema = Yup.object({
-        page: Yup.number().positive().integer().default(1),
-        limit: Yup.number().positive().integer().default(10),
+      const paginationSchema = yup.object({
+        page: yup.number().positive().integer().default(1),
+        limit: yup.number().positive().integer().default(10),
       });
   
       try {
@@ -99,7 +100,7 @@ router.post(
         { $limit: limit },
       ]);
   
-      const totalItem = await ProductTable.find().countDocuments();
+      const totalItem = await productTable.find().countDocuments();
   
       const totalPage = Math.ceil(totalItem / limit);
   
@@ -115,23 +116,24 @@ router.put(
     validateMongoIdFromReqParams,
     async (req, res, next) => {
       // create schema
-      const productValidationSchema = Yup.object({
-        name: Yup.string().required().trim().max(155),
-        brand: Yup.string().required().trim().max(155),
-        price: Yup.number().required().min(0),
-        quantity: Yup.number().required().min(1),
-        category: Yup.string()
+      const productValidationSchema = yup.object({
+        name: yup.string().required().trim().max(155),
+        brand: yup.string().required().trim().max(155),
+        price: yup.number().required().min(0),
+        quantity: yup.number().required().min(1),
+        category: yup.string()
           .required()
           .trim()
           .oneOf([
             "grocery",
             "electronics",
-            "electrical",
             "clothing",
-            "kitchen",
+            "electrical",
             "kids",
+            "kitchen",
+            "laundry"
           ]),
-        image: Yup.string().notRequired().trim(),
+        image: yup.string().notRequired().trim(),
       });
       try {
         req.body = await productValidationSchema.validate(req.body);
