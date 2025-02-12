@@ -3,12 +3,13 @@ import {
   Button,
   FormControl,
   FormHelperText,
+  LinearProgress,
   TextField,
   Typography,
 } from "@mui/material";
 import axios from "axios";
 import { Formik } from "formik";
-import React from "react";
+import React, { useState } from "react";
 import { Link, useNavigate } from "react-router";
 import * as yup from "yup";
 import axiosInstance from "../../lib/axios_instance";
@@ -16,7 +17,10 @@ import axiosInstance from "../../lib/axios_instance";
 
 const Login = () => {
   const navigate = useNavigate();
+  const [loading, setLoading] =  useState(false);
   return (
+  <Box>
+    {loading && <LinearProgress color="warning" />}
     <Formik
       initialValues={{
         email: "",
@@ -33,6 +37,7 @@ const Login = () => {
       })}
       onSubmit={async (values) => {
         try {
+          setLoading(true);
           const res = await axiosInstance.post("/user/login", values);
 
           navigate("/");
@@ -122,6 +127,7 @@ const Login = () => {
         );
       }}
     </Formik>
+  </Box>
   );
 };
 

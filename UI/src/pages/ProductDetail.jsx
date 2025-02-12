@@ -1,8 +1,56 @@
-import { Box, Button, Chip, Stack, Typography } from "@mui/material";
-import React from "react";
+import {
+  Box,
+  Button,
+  Chip,
+  CircularProgress,
+  Stack,
+  Typography,
+} from "@mui/material";
+import React, { useEffect, useState } from "react";
 import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
 import EditIcon from "@mui/icons-material/Edit";
+import { useNavigate, useParams } from "react-router";
+import axiosInstance from "../../lib/axios_instance";
 const ProductDetail = () => {
+  const params = useParams();
+  const [productDetails, setProductDetails] = useState({});
+  const [loading, setLoading] = useState(false);
+  const navigate = useNavigate();
+  const [deleteLoading, setDeleteLoading] = useState(false);
+
+  const deleteProduct = async () => {
+    try {
+      setDeleteLoading(true);
+      await axiosInstance.delete(`/product/delete/${params.id}`);
+      navigate("/");
+    } catch (error) {
+      console.log("Delete product api hit failed...");
+      console.log(error);
+    } finally {
+      setDeleteLoading(false);
+    }
+  };
+  useEffect(() => {
+    const getProductDetails = async () => {
+      try {
+        setLoading(true);
+        const res = await axiosInstance.get(`/product/detail/${params.id}`);
+        setLoading(false);
+        const product = res.data?.productDetails;
+        setProductDetails(product);
+      } catch (error) {
+        setLoading(false);
+        console.log("Get product detail api hit failed...");
+        console.log(error);
+      }
+    };
+
+    getProductDetails();
+  }, []);
+
+  if (loading || deleteLoading) {
+    return <CircularProgress />;
+  }
   return (
     <Box
       sx={{
@@ -21,8 +69,11 @@ const ProductDetail = () => {
     >
       <Box>
         <img
-          src="https://cdn.thewirecutter.com/wp-content/media/2023/04/tv-buying-guide-2048px-0032.jpg?auto=webp&quality=75&width=1024"
-          alt="TV"
+          src={
+            productDetails?.image ||
+            "https://cdn.thewirecutter.com/wp-content/media/2023/04/tv-buying-guide-2048px-0032.jpg?auto=webp&quality=75&width=1024"
+          }
+          alt={productDetails.name}
           height={"500px"}
         />
       </Box>
@@ -34,15 +85,25 @@ const ProductDetail = () => {
           alignItems: "flex-start",
         }}
       >
-        <Typography variant="h5">TV</Typography>
-        <Chip label="Samsung" variant="contained" color="warning" />
+        <Typography variant="h5">{productDetails.name}</Typography>
+        <Chip
+          label={productDetails.brand}
+          variant="contained"
+          color="warning"
+        />
 
-        <Typography variant="h6">Price:$800</Typography>
-        <Typography variant="h6">Available Quantity:10</Typography>
+        <Typography variant="h6">Price:${productDetails.price}</Typography>
+        <Typography variant="h6">
+          Available Quantity:{productDetails.quantity}
+        </Typography>
 
         <Box sx={{ display: "flex", gap: "1rem" }}>
           <Typography variant="h6">Category:</Typography>
-          <Chip label="Electronics" variant="contained" color="warning" />
+          <Chip
+            label={productDetails.category}
+            variant="contained"
+            color="warning"
+          />
         </Box>
 
         <Typography
@@ -52,18 +113,7 @@ const ProductDetail = () => {
             fontSize: "1.2rem",
           }}
         >
-          Lorem ipsum dolor sit amet consectetur, adipisicing elit. Asperiores
-          cumque quos sapiente ab possimus debitis id, perspiciatis molestiae
-          similique explicabo ipsa eius dolorem nihil animi quam dolores
-          inventore consequatur illo eum aliquam placeat aperiam adipisci sed.
-          Perspiciatis praesentium harum esse, quis illo voluptatum consequuntur
-          labore ex, hic nulla veritatis ab quasi eaque, iure laboriosam
-          recusandae dicta iste sed! Impedit a architecto dignissimos ab
-          repellendus officiis possimus? Ut, praesentium aperiam fugiat
-          inventore impedit enim, molestiae reprehenderit odit amet mollitia
-          consequatur dolores dolorem facere! Esse, repellendus explicabo.
-          Aspernatur recusandae ipsa temporibus a vel ut facilis, corporis
-          nostrum illo mollitia possimus repellat beatae.
+          {productDetails.description}
         </Typography>
 
         <Box
@@ -79,6 +129,9 @@ const ProductDetail = () => {
             variant="contained"
             color="error"
             startIcon={<DeleteOutlineIcon />}
+            onClick={() => {
+              deleteProduct();
+            }}
           >
             Delete
           </Button>

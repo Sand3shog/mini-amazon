@@ -5,6 +5,7 @@ const productValidationSchema = yup.object ({
         price: yup.number().required().min(0),
         brand: yup.string().required().max(150),
         category: yup.string().required().oneOf([ "grocery",
+            
             "electronics",
             "electrical",
             "clothing",

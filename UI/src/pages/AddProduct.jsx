@@ -28,11 +28,7 @@ const AddProduct = () => {
   const navigate = useNavigate();
   const addProduct = async (values) => {
     try {
-      await axiosInstance.post("/product/add", values, {
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
-        },
-      });
+      await axiosInstance.post("/product/add", values);
 
       navigate("/");
     } catch (error) {

@@ -126,12 +126,12 @@ router.put(
           .trim()
           .oneOf([
             "grocery",
-            "electronics",
-            "clothing",
-            "electrical",
-            "kids",
-            "kitchen",
-            "laundry"
+  "electronics",
+  "electrical",
+  "clothing",
+  "kitchen",
+  "kids",
+  "laundry",
           ]),
         image: yup.string().notRequired().trim(),
       });

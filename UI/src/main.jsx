@@ -9,6 +9,7 @@ import Register from './pages/Register.jsx'
 import EditProduct from './pages/EditProduct.jsx'
 import ProductDetail from './pages/ProductDetail.jsx'
 import AddProduct from './pages/AddProduct.jsx'
+import Test from './pages/Test.jsx'
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>
@@ -29,6 +30,10 @@ createRoot(document.getElementById('root')).render(
 
           <Route
           path = "/product-detail/:id" element = {<ProductDetail />}> 
+          </Route>
+
+          <Route
+          path = "/test" element = {<Test />}> 
           </Route>
         </Route>
 

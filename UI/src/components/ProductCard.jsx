@@ -1,7 +1,11 @@
 import { Box, Button, Chip, Stack, Typography } from "@mui/material";
 import RemoveRedEyeOutlinedIcon from "@mui/icons-material/RemoveRedEyeOutlined";
+import { useNavigate } from "react-router";
+// import axiosInstance from "../../lib/axios_instance";
 
 const ProductCard = (props) => {
+  const navigate = useNavigate();
+
   return (
     <Box
       sx={{
@@ -52,7 +56,7 @@ const ProductCard = (props) => {
           color="text.secondary"
           sx={{ lineHeight: 1.6, textAlign: "justify" }}
         >
-          {props.description}
+          {props.description}...
         </Typography>
 
         <Button
@@ -61,6 +65,9 @@ const ProductCard = (props) => {
           color="secondary"
           startIcon={<RemoveRedEyeOutlinedIcon />}
           sx={{ borderRadius: 1.5, fontWeight: 600, textTransform: "none" }}
+          onClick={() => {
+            navigate(`/product-detail/${props._id}`);
+          }}
         >
           Explore
         </Button>
