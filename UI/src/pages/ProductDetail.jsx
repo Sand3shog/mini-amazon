@@ -11,6 +11,7 @@ import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
 import EditIcon from "@mui/icons-material/Edit";
 import { useNavigate, useParams } from "react-router";
 import axiosInstance from "../../lib/axios_instance";
+
 const ProductDetail = () => {
   const params = useParams();
   const [productDetails, setProductDetails] = useState({});

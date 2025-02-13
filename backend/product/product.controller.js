@@ -29,7 +29,7 @@ router.post('/product/add', isUser , async (req, res, next) => {
 });
 
 // get product by id
-router.get('/product/details/:id', isUser , validateMongoIdFromReqParams, async (req, res) => {
+router.get('/product/detail/:id', isUser , validateMongoIdFromReqParams, async (req, res) => {
     // extract product id from req params
     const productId = req.params.id;
 
@@ -42,7 +42,7 @@ router.get('/product/details/:id', isUser , validateMongoIdFromReqParams, async 
     }
 
     // send res product details
-    return res.status(200).send({message: 'success', productData: product});
+    return res.status(200).send({message: 'success', productDetails: product});
 });
 
 // delete product by id
@@ -154,7 +154,7 @@ router.put(
   
       // update product
       const newValues = req.body;
-      await ProductTable.updateOne({_id:productId}),
+      await productTable.updateOne({_id:productId}),
       {
         $set:{
           name: newValues.name,
