@@ -9,14 +9,13 @@ import {
   TextField,
   Typography,
 } from "@mui/material";
-import axios from "axios";
 import { Formik } from "formik";
 import React from "react";
+import { Toaster } from "react-hot-toast";
 import { Link, useNavigate } from "react-router";
 import * as yup from "yup";
 import axiosInstance from "../../lib/axios_instance";
-import { successNotification} from "../../utils/notification";
-import { Toaster } from "react-hot-toast";
+import { successNotification } from "../../utils/notification";
 
 
 const Register = () => {
@@ -37,7 +36,7 @@ const Register = () => {
 
   return (
     <Box>
-      <Toaster>
+      <Toaster />
         <Formik
           initialValues={{
             firstName: "",
@@ -55,9 +54,9 @@ const Register = () => {
               password: yup.string().required().max(100).trim(),
               email: yup.string().required().email().max(100),
               phoneNumber: yup.number().notRequired().max(20),
-              address: yup.string().required().max(255),
+              address: yup.string().notRequired().max(255),
               dateOfBirth: yup.date().required(),
-              gender: yup.string().required().oneOf(["Male", "Female", "Other"]),
+              gender: yup.string().required().oneOf(["Male", "Female", "Others"]),
           })}
           onSubmit={ async (values) => {
             registerUser(values);
@@ -119,6 +118,19 @@ const Register = () => {
 
                 <FormControl fullWidth>
                   <TextField
+                    label="Phone Number"
+                    {...formik.getFieldProps("phoneNumber")}
+                  />
+
+                  {formik.touched.phoneNumber && formik.errors.phoneNumber ? (
+                    <FormHelperText error>
+                      {formik.errors.phoneNumber}
+                    </FormHelperText>
+                  ) : null}
+                </FormControl>
+
+                <FormControl fullWidth>
+                  <TextField
                     required
                     label="Password"
                     {...formik.getFieldProps("password")}
@@ -138,13 +150,13 @@ const Register = () => {
 
                 <FormControl fullWidth>
                   <TextField
-                    label="Age"
-                    {...formik.getFieldProps("age")}
+                    label="Date of Birth"
+                    {...formik.getFieldProps("dateOfBirth")}
                   />
 
-                  {formik.touched.age && formik.errors.age ? (
+                  {formik.touched.dateOfBirth && formik.errors.dateOfBirth ? (
                     <FormHelperText error>
-                      {formik.errors.age}
+                      {formik.errors.dateOfBirth}
                     </FormHelperText>
                   ) : null}
                 </FormControl>
@@ -156,9 +168,9 @@ const Register = () => {
                     label="Gender"
                     {...formik.getFieldProps("gender")}
                   >
-                    <MenuItem value={"male"}>Male</MenuItem>
-                    <MenuItem value={"female"}>Female</MenuItem>
-                    <MenuItem value={"other"}>Other</MenuItem>
+                    <MenuItem value={"Male"}>Male</MenuItem>
+                    <MenuItem value={"Female"}>Female</MenuItem>
+                    <MenuItem value={"Others"}>Others</MenuItem>
                   </Select>
 
                   {formik.touched.gender && formik.errors.gender ? (
@@ -193,7 +205,6 @@ const Register = () => {
             );
           }}
         </Formik>
-      </Toaster>
     </Box>
   );
 };

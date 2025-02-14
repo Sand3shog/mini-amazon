@@ -126,12 +126,12 @@ router.put(
           .trim()
           .oneOf([
             "grocery",
-  "electronics",
-  "electrical",
-  "clothing",
-  "kitchen",
-  "kids",
-  "laundry",
+            "electronics",
+            "electrical",
+            "clothing",
+            "kitchen",
+            "kids",
+            "laundry",
           ]),
         image: yup.string().notRequired().trim(),
       });
@@ -154,7 +154,7 @@ router.put(
   
       // update product
       const newValues = req.body;
-      await productTable.updateOne({_id:productId}),
+      await productTable.updateOne({_id:productId},
       {
         $set:{
           name: newValues.name,
@@ -162,8 +162,10 @@ router.put(
           price:newValues.price,
           quantity:newValues.quantity,
           category:newValues.category,
+          description:newValues.description,
         }
       }
+    );
       return res
         .status(200)
         .send({ message: "Product updated successfully...." });

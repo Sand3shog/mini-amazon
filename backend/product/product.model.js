@@ -15,17 +15,17 @@ const productSchema = new mongoose.Schema({
     category: {
         type: String, required: true, trim: true, 
         enum: ["grocery",
-  "electronics",
-  "electrical",
-  "clothing",
-  "kitchen",
-  "kids",
-  "laundry",],
+                "electronics",
+                "electrical",
+                "clothing",
+                "kitchen",
+                "kids",
+                "laundry",],
     },
     image: {
         type: String, required: false, trim: true,
     },
-    Quantity: {
+    quantity: {
         type: Number, trim: true, min: 1,
     },
     description: {

@@ -49,6 +49,8 @@ const Login = () => {
         } catch (error) {
           console.log("Login user api hit failed...");
           console.log(error);
+        } finally {
+          setLoading(false);
         }
       }}
     >
