@@ -4,6 +4,7 @@ import { Box, Button, CircularProgress, Pagination } from "@mui/material";
 import axiosInstance from "../../lib/axios_instance";
 // rafce => react arrow function component with export
 import { useNavigate } from "react-router";
+import Navbar from "../components/Navbar";
 const Home = () => {
   const navigate = useNavigate();
   const [products, setProducts] = useState([]);

@@ -1,24 +1,25 @@
+import { Box } from "@mui/material";
 import React, { useEffect } from "react";
-import { Toaster } from "react-hot-toast";
 import { Outlet, useNavigate } from "react-router";
+import Navbar from "../src/components/Navbar";
+import { Toaster } from "react-hot-toast";
 
-const AuthLayout = (props) => {
+const AuthLayout = () => {
   const navigate = useNavigate();
   const isLoggedIn = localStorage.getItem("accessToken");
 
   useEffect(() => {
     if (!isLoggedIn) {
-      navigate("/login", {
-        replace: true,
-      });
+      navigate("/login", { replace: true });
     }
-  }, [navigate, isLoggedIn]);
+  }, [isLoggedIn, navigate]);
+
   return (
-    <div>
-      <Toaster />
-      <h1>Add PRODUCT</h1>
+    <Box>
+      <Toaster position="bottom-center" />
+      <Navbar />
       <Outlet />
-    </div>
+    </Box>
   );
 };
 

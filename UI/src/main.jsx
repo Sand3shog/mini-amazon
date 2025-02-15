@@ -1,18 +1,19 @@
-import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
-import "./index.css";
 import { BrowserRouter, Route, Routes } from "react-router";
-import Home from "./pages/Home";
-import Login from "./pages/Login";
-import Register from "./pages/Register";
+import AuthLayout from "../layout/AuthLayout";
+import GuestLayout from "../layout/GuestLayout";
+import "./index.css";
+import About from "./pages/About";
 import AddProduct from "./pages/AddProduct";
 import EditProduct from "./pages/EditProduct";
+import Home from "./pages/Home";
+import Login from "./pages/Login";
 import ProductDetail from "./pages/ProductDetail";
+import Register from "./pages/Register";
 import Test from "./pages/Test";
-import AuthLayout from "../layout/AuthLayout";
 
 createRoot(document.getElementById("root")).render(
-  <BrowserRouter>
+<BrowserRouter>
     <Routes>
       {/* protected routes-logged in user route */}
       <Route element={<AuthLayout />}>
@@ -21,10 +22,11 @@ createRoot(document.getElementById("root")).render(
         <Route path="/edit-product/:id" element={<EditProduct />} />
         <Route path="/product-detail/:id" element={<ProductDetail />} />
         <Route path="/test" element={<Test />} />
+        <Route path="/about" element={<About />} />
       </Route>
 
       {/* public routes */}
-      <Route>
+      <Route element={<GuestLayout />}>
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
       </Route>
